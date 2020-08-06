@@ -1,0 +1,71 @@
+<div class="modal-header">
+    <span>{{title}}</span>
+    <button class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <form [formGroup]="addUserForm">
+
+        <div class="form-row">
+            <div class="col form-group">
+                <div class="has-person-icon">
+                    <input type="text" class="form-control" formControlName="fname" placeholder="First name">
+                </div>
+            </div>
+        </div>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="addUserForm.controls['fname'].hasError('required') &&
+        ( addUserForm.controls['fname'].touched )">
+            Firstname is required</p>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="(!addUserForm.controls['fname'].valid && !addUserForm.controls['fname'].hasError('required') &&
+        ( addUserForm.controls['fname'].touched ))">
+            Firstname is not Valid</p>
+
+
+        <div class="form-row">
+            <div class="col form-group">
+                <div class="has-person-icon">
+                    <input type="text" class="form-control" formControlName="lname" placeholder="Last name">
+                </div>
+            </div>
+        </div>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="addUserForm.controls['lname'].hasError('required') &&
+            ( addUserForm.controls['lname'].touched )">
+            Lastname is required</p>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="(!addUserForm.controls['lname'].valid && !addUserForm.controls['lname'].hasError('required') &&
+            ( addUserForm.controls['lname'].touched ))">
+            Lastname is not Valid</p>
+
+
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" class="form-control" formControlName="email" placeholder="Email">
+            </div>
+        </div>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="addUserForm.controls['email'].hasError('required') &&
+        ( addUserForm.controls['email'].touched )">
+            Email is Required</p>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="(!addUserForm.controls['email'].valid && !addUserForm.controls['email'].hasError('required') &&
+        ( addUserForm.controls['email'].touched ))">
+            Enter a valid Email</p>
+
+
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" formControlName="role">
+                    <option selected disabled>Select Role</option>
+                    <option value=1>Super Admin</option>
+                    <option value=2>Loading Staff</option>
+                </select>
+            </div>
+        </div>
+        <p style="color: #ff464b; font-size: 16px" *ngIf="addUserForm.controls['role'].hasError('required') &&
+        ( addUserForm.controls['role'].touched )">
+            Role is required</p>
+    </form>
+</div>
+<div class="modal-footer text-center">
+    <button class="btn btn-md btn-primary" *ngIf=isAdd [disabled]="!addUserForm.valid" (click)="onSubmit()" (click)="closeModal()">Submit</button>
+    <button class="btn btn-md btn-primary" *ngIf=!isAdd [disabled]="!addUserForm.valid" (click)="onUpdate()" (click)="closeModal()">Update</button>
+
+</div>

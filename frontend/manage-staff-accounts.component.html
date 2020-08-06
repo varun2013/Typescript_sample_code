@@ -1,0 +1,107 @@
+<nb-card>
+    <nb-card-header class="table-card-header justify-content-between">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-auto">
+                Manage Staff Accounts
+            </div>
+            <div class="col-auto">
+                <div class="card-header-btn"><button (click)="addNewItem()" class="btn btn-sm btn-primary">ADD NEW</button></div>
+            </div>
+        </div>
+    </nb-card-header>
+
+    <nb-card-body>
+        <table class="table action table-striped table-custom table-bordered">
+            <thead>
+                <tr class="action">
+                    <th scope="col">Action</th>
+                    <th scope="col">FirstName</th>
+                    <th scope="col">LastName</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Role</th>
+                </tr>
+                <tr class="action">
+                    <th scope="col"></th>
+                    <th scope="col"><input type="text" [(ngModel)]="firstName" (keydown)="keyDownFunction($event)" class="form-control form-control-sm"></th>
+                    <th scope="col"><input type="text" [(ngModel)]="lastName" (keydown)="keyDownFunction($event)" class="form-control form-control-sm"></th>
+                    <th scope="col"><input type="text" [(ngModel)]="email" (keydown)="keyDownFunction($event)" class="form-control form-control-sm"></th>
+                    <!-- <th scope="col"><input type="text" [(ngModel)]="role" (keydown)="keyDownFunction($event)" class="form-control form-control-sm"></th> -->
+
+                    <th scope="col">
+                        <select [(ngModel)]="role" class="form-control form-control-sm" (change)="change()">
+                            <option></option>
+                            <option *ngFor="let obj of roleArray" [value]="obj.value">{{obj.role}}</option>
+                        </select>
+                    </th>
+
+                </tr>
+            </thead>
+            <!-- <p> -->
+            <tbody *ngIf="staffList.length==0">
+                <tr>
+                    <td colspan="5">
+                        <h2 class="empty_dataDiv">No Data found</h2>
+                    </td>
+                </tr>
+            </tbody>
+
+            <tbody *ngFor="let user of staffList;let i= index">
+                <tr>
+                    <th scope="col">
+                        <button class="table-actions" (click)="open(content);deleteUserData(user)"><i class="far fa-trash-alt"></i></button>
+                        <button class="table-actions" (click)="toggleStatus(user,true)" [disabled]="user.isActive==true"
+                            [ngClass]="(user.isActive==true)?'active':''"><i class="far fa-check-circle"></i></button>
+                        <button class="table-actions" (click)="toggleStatus(user,false)" [disabled]="user.isActive==false"
+                            [ngClass]="(user.isActive==false)?'deactivate':''"><i class="fas fa-minus-circle"></i></button>
+                        <button class="table-actions" (click)="editUser(user)"><i class="fas fa-pencil-alt"></i></button>
+
+                    </th>
+
+                    <td><input class="custom-input" disabled value={{user.firstName}} id="fname{{i}}"></td>
+                    <td><input class="custom-input" disabled value={{user.lastName}} id="lname{{i}}"></td>
+                    <td><input class="custom-input" disabled value={{user.email}}></td>
+                    <td>
+                        <input class="custom-input" disabled *ngIf="user.role==1" value="Super Admin">
+                        <input class="custom-input" disabled *ngIf="user.role==2" value="Loading Staff">
+                    </td>
+                </tr>
+            </tbody>
+        <!-- </p> -->
+        </table>
+        <nav aria-label="Page navigation example" *ngIf="totalPages>1">
+            <ul class="pagination justify-content-center">
+                <li class="page-item"><a class="page-link" [ngClass]="(prevDisable == true)?'disabled':''" (click)="navigationBtn('prev')">«</a></li>
+                <li class="page-item">
+                    <a class="page-link" [ngClass]="(prevDisable==true)?'disabled':''" (click)="navigationBtn('prevone')">
+                        <</a> 
+                    </li>              
+                <li *ngFor="let i of pagination" class="page-item"><a class="page-link" [ngClass]="(currentPage == i)?'disabled':''" (click)="goToPage(i)">{{i+1}}</a></li>
+                <li class="page-item"><a class="page-link" [ngClass]="(nextDisable == true)?'disabled':''" (click)="navigationBtn('nextone')">></a></li>
+                <li class="page-item"><a class="page-link" [ngClass]="(nextDisable == true)?'disabled':''" (click)="navigationBtn('next')">»</a></li>
+            </ul>
+        </nav>
+    </nb-card-body>
+    <!-- <div *ngIf="staffList.length == 0">
+        <h2>No Data Found</h2>
+    </div> -->
+</nb-card>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-title">Confirmation</h4>
+        <button type="button" class="close" aria-describedby="modal-title" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <p><strong>Are you sure you want to delete</strong></p>
+        <p>All information associated to this user profile will be permanently deleted.
+            <span class="text-danger">This operation can not be undone.</span>
+        </p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="deleteUser();modal.dismiss()">Ok</button>
+    </div>
+</ng-template>
